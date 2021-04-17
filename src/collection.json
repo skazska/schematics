@@ -77,9 +77,14 @@
       "schema": "./lib/service/schema.json"
     },
     "queries": {
-      "factory": "./lib/queries/queries.factory#main",
-      "description": "Create a queries provider.",
-      "schema": "./lib/queries/schema.json"
+      "factory": "./lib/io-provider/io-provider.factory#queries",
+      "description": "Create a io-provider provider.",
+      "schema": "./lib/io-provider/schema.json"
+    },
+    "rpc": {
+      "factory": "./lib/io-provider/io-provider.factory#rpc",
+      "description": "Create a io-provider provider.",
+      "schema": "./lib/io-provider/schema.json"
     },
     "resolver": {
       "factory": "./lib/resolver/resolver.factory#main",

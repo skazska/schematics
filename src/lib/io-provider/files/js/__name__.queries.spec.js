@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
-import { <%= classify(name) %>queries } from './<%= name %>.queries';
+import { <%= classify(name) %>queries } from './<%= name %>.io-provider';
 
-describe('<%= classify(name) %>queries', () => {
+describe('<%= classify(name) %>io-provider', () => {
   let queries;
 
   beforeEach(async () => {

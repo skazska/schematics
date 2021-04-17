@@ -6,7 +6,7 @@ import {
 import * as path from 'path';
 import { ApplicationOptions } from '../application/application.schema';
 import { ModuleOptions } from '../module/module.schema';
-import { QueriesOptionsInput } from './queries.schema';
+import { QueriesOptionsInput } from './io-provider.schema';
 
 const fileContent =
   "import { Inject, Injectable } from '@nestjs/common';\n" +
@@ -22,7 +22,7 @@ describe('Queries Factory', () => {
     '.',
     path.join(process.cwd(), 'src/collection.json'),
   );
-  xit('should manage name only', async () => {
+  it('should manage name only', async () => {
     const options: QueriesOptionsInput = {
       name: 'foo',
       skipImport: true,

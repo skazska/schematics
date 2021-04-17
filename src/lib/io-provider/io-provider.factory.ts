@@ -16,14 +16,28 @@ import {
 } from '@angular-devkit/schematics';
 import {
   DeclarationOptions,
+  Location,
   ModuleDeclarator,
-} from '../../utils/module.declarator';
-import { ModuleFinder } from '../../utils/module.finder';
-import { Location, NameParser } from '../../utils/name.parser';
-import { mergeSourceRoot } from '../../utils/source-root.helpers';
-import {QueriesOptions, QueriesOptionsInput} from './queries.schema';
+  ModuleFinder,
+  NameParser,
+  mergeSourceRoot
+} from '../../utils';
+import {QueriesOptions, QueriesOptionsInput} from './io-provider.schema';
 
-export function main(optionsInput: QueriesOptionsInput): Rule {
+const CLASS_NAME = {
+  queries: 'KnexModule',
+  rpc: 'HemeraModule',
+}
+
+export function queries(optionsInput: QueriesOptionsInput): Rule {
+  return main({ ...optionsInput, type: 'queries' });
+}
+
+export function rpc(optionsInput: QueriesOptionsInput): Rule {
+  return main({ ...optionsInput, type: 'rpc' });
+}
+
+function main(optionsInput: QueriesOptionsInput): Rule {
   const options = transform(optionsInput);
   return (tree: Tree, context: SchematicContext) => {
     const merged = mergeSourceRoot(options);
@@ -49,10 +63,9 @@ export function main(optionsInput: QueriesOptionsInput): Rule {
 }
 
 function transform(source: QueriesOptionsInput): QueriesOptions {
-  const { flat, language = 'ts' } = source;
+  const { flat, language = 'ts', type } = source;
   let { name, path } = source;
   const metadata = 'providers';
-  const type = 'queries';
 
   if (!name) {
     throw new SchematicsException('Option (name) is required.');
@@ -107,7 +120,7 @@ function addDeclarationToModule(options: QueriesOptions): Rule {
       metadata: 'imports',
       type: 'package', //?
       name: '@r-vision/nestjs-common',
-      className: 'KnexModule', //?
+      className: CLASS_NAME[options.type], //?
       path: '' as Path,
       module: '' as Path,
       // symbol?: 'string',
