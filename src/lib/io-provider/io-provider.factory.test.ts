@@ -14,7 +14,16 @@ const fileContent =
   '\n' +
   '@Injectable()\n' +
   'export class FooQueries {\n' +
+  '  private readonly baseTable = \'table\';\n' +
+  '\n' +
   '  constructor(@Inject(\'Knex\') private readonly knex: Knex) {}\n' +
+  '\n' +
+  '  /**\n' +
+  '   * Returns query builder based on base table\n' +
+  '   */\n' +
+  '  private builder(trx?: Knex.Transaction): Knex.QueryBuilder {\n' +
+  '    return this.knex(this.baseTable);\n' +
+  '  }\n' +
   '}\n';
 
 describe('Queries Factory', () => {
@@ -22,9 +31,10 @@ describe('Queries Factory', () => {
     '.',
     path.join(process.cwd(), 'src/collection.json'),
   );
-  it('should manage name only', async () => {
+  it('should manage name and base only', async () => {
     const options: QueriesOptionsInput = {
       name: 'foo',
+      base: 'table',
       skipImport: true,
       flat: true,
     };
@@ -125,7 +135,7 @@ describe('Queries Factory', () => {
     ).toBeDefined();
     expect(tree.readContent('/foo.queries.js')).toEqual(fileContent);
   });
-  xit('should manage declaration in app module', async () => {
+  it('should manage declaration in app module', async () => {
     const app: ApplicationOptions = {
       name: '',
     };
@@ -139,6 +149,7 @@ describe('Queries Factory', () => {
       "import { Module } from '@nestjs/common';\n" +
         "import { AppController } from './app.controller';\n" +
         "import { AppService } from './app.service';\n" +
+        "import { KnexModule } from '@r-vision/nestjs-common';\n" +
         "import { FooQueries } from './foo.queries';\n" +
         '\n' +
         '@Module({\n' +
@@ -174,6 +185,19 @@ describe('Queries Factory', () => {
         '  providers: [FooQueries]\n' +
         '})\n' +
         'export class FooModule {}\n',
+    );
+    expect(tree.readContent(normalize('/src/app.module.ts'))).toEqual(
+      "import { Module } from '@nestjs/common';\n" +
+      "import { AppController } from './app.controller';\n" +
+      "import { AppService } from './app.service';\n" +
+      "import { FooModule } from './foo/foo.module';\n" +
+      '\n' +
+      '@Module({\n' +
+      '  imports: [FooModule],\n' +
+      '  controllers: [AppController],\n' +
+      '  providers: [AppService],\n' +
+      '})\n' +
+      'export class AppModule {}\n',
     );
   });
 });

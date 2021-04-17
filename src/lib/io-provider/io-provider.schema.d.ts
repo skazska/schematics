@@ -4,9 +4,13 @@ export type QueriesOptionsInput = Partial<QueriesOptions>;
 
 export interface QueriesOptions {
   /**
-   * The name of the service.
+   * The name of the provider.
    */
   name: string;
+  /**
+   * The name of the base.
+   */
+  base: string;
   /**
    * The path to create the service.
    */

@@ -13,6 +13,15 @@
       },
       "x-prompt": "What name would you like to use for the service?"
     },
+    "base": {
+      "type": "string",
+      "description": "The name of the table.",
+      "$default": {
+        "$source": "argv",
+        "index": 1
+      },
+      "x-prompt": "What name would you like to use for the base entity?"
+    },
     "path": {
       "type": "string",
       "format": "path",
