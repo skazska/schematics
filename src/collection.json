@@ -76,6 +76,11 @@
       "description": "Create a Nest service.",
       "schema": "./lib/service/schema.json"
     },
+    "queries": {
+      "factory": "./lib/queries/queries.factory#main",
+      "description": "Create a queries provider.",
+      "schema": "./lib/queries/schema.json"
+    },
     "resolver": {
       "factory": "./lib/resolver/resolver.factory#main",
       "description": "Create a Nest resolver.",

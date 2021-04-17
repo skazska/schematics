@@ -25,9 +25,10 @@ export class ModuleImportDeclarator {
   }
 
   private buildLineToInsert(options: DeclarationOptions): string {
-    return `import { ${options.symbol} } from '${this.computeRelativePath(
-      options,
-    )}';`;
+    const source = options.type === 'package'
+      ? options.name
+      : this.computeRelativePath(options);
+    return `import { ${options.symbol} } from '${source}';`;
   }
 
   private computeRelativePath(options: DeclarationOptions): string {

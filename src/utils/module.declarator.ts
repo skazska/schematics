@@ -8,8 +8,8 @@ export interface DeclarationOptions {
   type?: string;
   name: string;
   className?: string;
-  path: Path;
-  module: Path;
+  path?: Path;  // changed to optional
+  module?: Path;  // changed to optional
   symbol?: string;
   staticOptions?: {
     name: string;
